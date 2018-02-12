@@ -292,10 +292,6 @@ class UI(builder.Builder):
         # set default value
         self.page_number.set_last(self.doc.pages_number())
 
-        # Enable dropping files onto the window
-        self.p_win.drag_dest_set(Gtk.DestDefaults.ALL, [], Gdk.DragAction.COPY)
-        self.p_win.drag_dest_add_text_targets()
-
 
     def setup_screens(self):
         """ Sets up the position of the windows
@@ -511,26 +507,6 @@ class UI(builder.Builder):
             recent_menu (:class:`~Gtk.RecentChooserMenu`): the recent docs menu
         """
         self.swap_document(recent_menu.get_current_uri())
-
-
-    def on_drag_drop(self, widget, drag_context, x, y, data, info, time):
-        """ Receive the drag-drops (as text only). If a file is dropped, open it.
-
-        Args:
-            widget (:class:`~Gtk.Widget`): The widget on which the dragged item was dropped
-            drag_context (:class:`~Gdk.DragContext`):
-            x (`float`):
-            y (`float`):
-            data (:class:`~Gtk.SelectionData`): container for the dropped data
-            info (`int`):
-            time (`int`):
-        """
-        received = data.get_text()
-        if received.startswith('file://'):
-            received = received[len('file://'):]
-
-        if os.path.isfile(received) and received.lower().endswith('.pdf'):
-            self.swap_document(os.path.abspath(received))
 
 
     def pick_file(self, *args):
